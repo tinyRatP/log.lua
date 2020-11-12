@@ -12,6 +12,7 @@ local log = { _version = "0.1.0" }
 log.usecolor = true
 log.outfile = nil
 log.level = "trace"
+log.timeFormat = "%Y-%m-%d %H:%M:%S"
 
 
 local modes = {
@@ -55,7 +56,7 @@ end
 for i, x in ipairs(modes) do
   local nameupper = x.name:upper()
   log[x.name] = function(...)
-    
+
     -- Return early if we're below the log level
     if i < levels[log.level] then
       return
@@ -64,12 +65,13 @@ for i, x in ipairs(modes) do
     local msg = tostring(...)
     local info = debug.getinfo(2, "Sl")
     local lineinfo = info.short_src .. ":" .. info.currentline
+    local time = os.date(log.timeFormat)
 
     -- Output to console
     print(string.format("%s[%-6s%s]%s %s: %s",
                         log.usecolor and x.color or "",
                         nameupper,
-                        os.date("%H:%M:%S"),
+                        time,
                         log.usecolor and "\27[0m" or "",
                         lineinfo,
                         msg))
@@ -78,7 +80,7 @@ for i, x in ipairs(modes) do
     if log.outfile then
       local fp = io.open(log.outfile, "a")
       local str = string.format("[%-6s%s] %s: %s\n",
-                                nameupper, os.date(), lineinfo, msg)
+                                nameupper, time, lineinfo, msg)
       fp:write(str)
       fp:close()
     end
