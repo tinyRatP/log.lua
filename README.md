@@ -5,6 +5,15 @@ A tiny logging module for Lua.
 
 
 ## Installation
+
+### [Luarocks](https://luarocks.org/)
+
+```bash
+$ luarocks install --local loglua
+```
+
+### Manual
+
 The [log.lua](log.lua?raw=1) file should be dropped into an existing project
 and required by it.
 ```lua
